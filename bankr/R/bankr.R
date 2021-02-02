@@ -44,10 +44,9 @@ giro_account <- R6::R6Class("GiroAccount",
       }
       if (self$balance - value < 0) {
         super$withdraw(value + private$overdraft_fee)
-      } else{
+      } else {
         super$withdraw(value)
       }
-
     }
   ),
   private = list(
@@ -55,5 +54,41 @@ giro_account <- R6::R6Class("GiroAccount",
     overdraft_limit = -500,
     # @field overdraft_fee overdraft fee that gets deducted if balance is negative
     overdraft_fee = 5
+  )
+)
+
+#' R6 Class for a safe bank account
+#'
+#' @description
+#' A bank account with a private field for balance instead of a public field
+
+safe_account <- R6::R6Class("SafeAccount",
+  private = list(
+    balance = 0
+  ),
+  active = list(
+    deposit = function(value) {
+      if (missing(value)) {
+        cat("current balance is :", self$get_balance)
+      } else {
+        checkmate::assert_number(value, lower = 1, upper = Inf)
+        private$balance <- private$balance + value
+        cat("current balance is :", self$get_balance)
+      }
+    },
+    get_balance = function() {
+      private$balance
+    },
+    withdraw = function(value) {
+      if (missing(value)) {
+        cat("current balance is :", self$get_balance)
+      } else {
+        checkmate::assert_number(value, lower = 0)
+        stopifnot("Cannot withdraw more money than bank account yields!" =
+                    !(value > self$get_balance))
+        private$balance <- private$balance - value
+        cat("current balance is :", self$get_balance)
+      }
+    }
   )
 )

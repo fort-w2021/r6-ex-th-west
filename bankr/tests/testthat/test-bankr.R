@@ -26,3 +26,27 @@ test_that("basic implementation of class account is correct", {
     1000
   )
 })
+
+test_that("implementation of subclass giroaccount is correct", {
+  expect_error(giro_account$new$withdraw(-520))
+  expect_error(giro_account$new$withdraw(520))
+  expect_error(giro_account$new$withdraw(496))
+  expect_identical(
+    {
+      test_giro <- giro_account$new()
+      test_giro$deposit(1500)
+      test_giro$withdraw(1200)
+      test_giro$balance
+    },
+    300
+  )
+  expect_identical(
+    {
+      test_giro <- giro_account$new()
+      test_giro$deposit(1500)
+      test_giro$withdraw(1600)
+      test_giro$balance
+    },
+    -105
+  )
+})
