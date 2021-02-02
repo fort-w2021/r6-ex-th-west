@@ -27,3 +27,18 @@ account <- R6::R6Class("Account",
     }
   )
 )
+
+giro_account <- R6::R6Class("GiroAccount",
+  inherit = account,
+  public = list(
+    withdraw = function(value) {
+
+    }
+  )
+  private = list(
+    #' @field overdraft limit
+    overdraft_limit = -50
+    #' @field overdraft fee
+    overdraft_fee = - 5
+  )
+)
