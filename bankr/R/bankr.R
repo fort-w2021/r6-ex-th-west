@@ -8,6 +8,12 @@
 # bei der Subclass geht das schon. Also das scheint auch kein Workaround zu sein,
 # Um Tipps wäre ich dankbar. Es wäre ja auch hilfreich unter der Sektion "See also"
 # auf Account zu verlinken. Aber auch das ist mir leider nicht gelungen.
+#
+# PROBLEM2: Bei der Klasse SafeAccount habe ich das Problem, dass get_balance()
+# zwar den derzeitigen Kontostand ausgibt. Wenn self$get_balance() aber innerhalb
+# von deposit und withdraw aufgerufen wird und man  kein value zuweist, wird
+# "current balance is: 0NULL" ausgegeben. Ich komme einfach nicht dahinter, wieso
+# hier NULL angehängt wird, da ja nicht direkt über ...$balance zugegriffen wird.
 
 
 #' R6 Class for a bank account
@@ -62,6 +68,7 @@ giro_account <- R6::R6Class("GiroAccount",
 
     #' @return The current balance after performing the transaction.
     withdraw = function(value) {
+      checkmate::assert_number(value, lower = 0)
       if (self$balance - value - private$overdraft_fee < private$overdraft_limit) {
         stop("Balance needs to be at least ", private$overdraft_limit, ".")
       }
