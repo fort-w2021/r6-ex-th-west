@@ -4,7 +4,8 @@
 \alias{account}
 \title{R6 Class for a bank account}
 \description{
-A bank account with...
+A bank account with basic functionality for adding or removing money from its
+balance.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -25,7 +26,7 @@ A bank account with...
 \if{html}{\out{<a id="method-deposit"></a>}}
 \if{latex}{\out{\hypertarget{method-deposit}{}}}
 \subsection{Method \code{deposit()}}{
-public method to deposit money
+Method to deposit money.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{account$deposit(value)}\if{html}{\out{</div>}}
 }
@@ -33,16 +34,21 @@ public method to deposit money
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{value}}{the amount of money to add to the account}
+\item{\code{value}}{The amount of money to add  to the account or to withdraw from
+the account.
+@export}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The current balance after performing the transaction.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-withdraw"></a>}}
 \if{latex}{\out{\hypertarget{method-withdraw}{}}}
 \subsection{Method \code{withdraw()}}{
-public method to withdraw money
+Method to withdraw money.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{account$withdraw(value)}\if{html}{\out{</div>}}
 }
@@ -50,9 +56,14 @@ public method to withdraw money
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{value}}{the amount of money to withdraw from the account}
+\item{\code{value}}{The amount of money to add  to the account or to withdraw from
+the account.
+@export}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The current balance after performing the transaction.
 }
 }
 \if{html}{\out{<hr>}}

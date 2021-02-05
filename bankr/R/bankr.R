@@ -1,22 +1,40 @@
+# PROBLEM:
+# Mir ist leider nicht klar wie ich das warning von devtools:check() "Missing
+# link or links in documentation object 'giro_account.Rd':..." beheben soll.
+# Google hat mir dabei leider nicht geholfen (vielleicht hab ich die Section
+# Cross-References von 'Writing R Extensions' auch nicht wirklich verstanden).
+# Ich habe lediglich https://github.com/r-lib/roxygen2/issues/1155 das hier
+# gefunden. Wie es allerdings scheint kann man die Superklasse nicht exportieren
+# bei der Subclass geht das schon. Also das scheint auch kein Workaround zu sein,
+# Um Tipps wäre ich dankbar. Es wäre ja auch hilfreich unter der Sektion "See also"
+# auf Account zu verlinken. Aber auch das ist mir leider nicht gelungen.
+
+
 #' R6 Class for a bank account
 #'
 #' @description
-#' A bank account with...
+#' A bank account with basic functionality for adding or removing money from its
+#' balance.
+#' @param value The amount of money to add  to the account or to withdraw from
+#'   the account.
+#'   @export
 account <- R6::R6Class("Account",
   public = list(
     #' @field balance the account balance
     balance = 0,
     #' @description
-    #' public method to deposit money
-    #' @param value the amount of money to add to the account
+    #' Method to deposit money.
+
+    #' @return The current balance after performing the transaction.
     deposit = function(value) {
       checkmate::assert_number(value, lower = 0, upper = Inf)
       self$balance <- self$balance + value
       cat("current balance: ", self$balance)
     },
     #' @description
-    #' public method to withdraw money
-    #' @param value the amount of money to withdraw from the account
+    #' Method to withdraw money.
+
+    #' @return The current balance after performing the transaction.
     withdraw = function(value) {
       checkmate::assert_number(value, lower = 0)
       if (value > self$balance && class(self)[[1]] == "Account") {
@@ -31,13 +49,18 @@ account <- R6::R6Class("Account",
 #' R6 Subclass for a giro account
 #'
 #' @description
-#' A special form of bank account that has an overdraft limit and fee
+#' A special form of bank account that has an overdraft limit and fee.
+#' @param value The amount of money to add  to the account or to withdraw from
+#'   the account.
+#' @seealso [bankr::Account]
+#' @export
 giro_account <- R6::R6Class("GiroAccount",
   inherit = account,
   public = list(
     #' @description
     #' method to withdraw money from giro account
-    #' @param value the amount of money to withdraw from account
+
+    #' @return The current balance after performing the transaction.
     withdraw = function(value) {
       if (self$balance - value - private$overdraft_fee < private$overdraft_limit) {
         stop("Balance needs to be at least ", private$overdraft_limit, ".")
@@ -57,16 +80,28 @@ giro_account <- R6::R6Class("GiroAccount",
   )
 )
 
+# Welchen Vorteil hat so eine Konstruktion möglicherweise?
+#
+# Diese Konstruktion hat den Vorteil, dass nicht mehr direkt auf das Feld balance
+# zugegriffen werden kann. Damit lassen sich Manipulationen verhindern, da der
+# Wert von Balance nur noch mittels den active bindings deposit und withdraw,
+# also den legitimen "Methoden" verändert werden kann.
+
+
 #' R6 Class for a safe bank account
 #'
 #' @description
 #' A bank account with a private field for balance instead of a public field
-
+#' @param value The amount of money to add  to the account or to withdraw from
+#'   the account.
 safe_account <- R6::R6Class("SafeAccount",
   private = list(
+
     balance = 0
   ),
   active = list(
+    #' @field deposit Deposits money to the safe account and returns the balance
+    #'   after the transaction is finished.
     deposit = function(value) {
       if (missing(value)) {
         cat("current balance is :", self$get_balance)
@@ -76,9 +111,12 @@ safe_account <- R6::R6Class("SafeAccount",
         cat("current balance is :", self$get_balance)
       }
     },
+    #' @field get_balance Returns the current account balance.
     get_balance = function() {
       private$balance
     },
+    #' @field withdraw Withdraws money from the safe account and returns the balance
+    #'   after the transaction is finished.
     withdraw = function(value) {
       if (missing(value)) {
         cat("current balance is :", self$get_balance)

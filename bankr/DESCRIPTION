@@ -11,8 +11,7 @@ Description: What the package does (one paragraph).
 License: GPL-2
 Imports: 
       R6,
-      checkmate,
-      testthat
+      checkmate
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

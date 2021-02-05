@@ -4,7 +4,10 @@
 \alias{giro_account}
 \title{R6 Subclass for a giro account}
 \description{
-A special form of bank account that has an overdraft limit and fee
+A special form of bank account that has an overdraft limit and fee.
+}
+\seealso{
+\link{Account}
 }
 \section{Super class}{
 \code{\link[bankr:Account]{bankr::Account}} -> \code{GiroAccount}
@@ -35,9 +38,13 @@ method to withdraw money from giro account
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{value}}{the amount of money to withdraw from account}
+\item{\code{value}}{The amount of money to add  to the account or to withdraw from
+the account.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The current balance after performing the transaction.
 }
 }
 \if{html}{\out{<hr>}}

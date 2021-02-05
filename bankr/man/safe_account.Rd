@@ -6,6 +6,19 @@
 \description{
 A bank account with a private field for balance instead of a public field
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{deposit}}{Deposits money to the safe account and returns the balance
+after the transaction is finished.}
+
+\item{\code{get_balance}}{Returns the current account balance.}
+
+\item{\code{withdraw}}{Withdraws money from the safe account and returns the balance
+after the transaction is finished.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
